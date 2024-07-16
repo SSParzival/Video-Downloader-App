@@ -50,9 +50,8 @@ class VideoDownloader(QThread):
         failed_downloads = []
 
         self.total_videos = sum(
-            self.get_playlist_video_count(url)
+            self.get_playlist_video_count(url) if "playlist?list=" in url else 1
             for url in self.urls
-            if "playlist?list=" in url
         )
         self.log_message.emit(f"Total videos to download: {self.total_videos}")
 
@@ -318,16 +317,16 @@ class YoutubeDownloader(QMainWindow):
         label = QLabel("Video Downloader", widget)
         layout.addWidget(label)
 
-        # URL Label and LineEdit
-        self.url_label = QLabel("YouTube URLs (comma-separated):", self)
-        self.url_input = QLineEdit(self)
+        # URL Label and QTextEdit for URLs
+        self.url_label = QLabel("YouTube URLs (one per line):", self)
+        self.url_input = QTextEdit(self)
         layout.addWidget(self.url_label)
         layout.addWidget(self.url_input)
 
         # Destination Label and LineEdit
         self.dest_label = QLabel("Destination Folder:", self)
         self.dest_input = QLineEdit(self)
-        self.dest_input.setReadOnly(True)
+        self.dest_input.setReadOnly(False)
         layout.addWidget(self.dest_label)
         layout.addWidget(self.dest_input)
 
@@ -381,7 +380,8 @@ class YoutubeDownloader(QMainWindow):
         self.progress_bar.setValue(value)
 
     def start_download(self):
-        urls = self.url_input.text().split(",")
+        urls_text = self.url_input.toPlainText()
+        urls = urls_text.splitlines()  # Split by lines to get individual URLs
         dest_folder = self.dest_input.text()
         file_type = "mp3" if self.mp3_radio.isChecked() else "mp4"
 
