@@ -11,7 +11,6 @@ from tqdm import tqdm
 from PyQt5.QtWidgets import (
     QApplication,
     QMainWindow,
-    QWidget,
     QLabel,
     QLineEdit,
     QPushButton,
@@ -22,7 +21,9 @@ from PyQt5.QtWidgets import (
     QRadioButton,
     QButtonGroup,
     QProgressBar,
+    QWidget,
 )
+from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QThread, pyqtSignal
 
 
@@ -304,15 +305,18 @@ class YoutubeDownloader(QMainWindow):
         self.initUI()
 
     def initUI(self):
-        self.setWindowTitle("YouTube Video Downloader")
+        self.setWindowTitle("Video Downloader")
         self.setGeometry(100, 100, 600, 400)
 
-        # Main widget
+        icon_path = "images.ico"  # Replace with your icon file path
+        self.setWindowIcon(QIcon(icon_path))
+
         widget = QWidget(self)
         self.setCentralWidget(widget)
 
-        # Layout
         layout = QVBoxLayout(widget)
+        label = QLabel("Video Downloader", widget)
+        layout.addWidget(label)
 
         # URL Label and LineEdit
         self.url_label = QLabel("YouTube URLs (comma-separated):", self)
@@ -418,6 +422,12 @@ class YoutubeDownloader(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+
+    # Set application icon
+    app_icon_path = "images.ico"
+    app.setWindowIcon(QIcon(app_icon_path))
+
     window = YoutubeDownloader()
     window.show()
+
     sys.exit(app.exec_())
