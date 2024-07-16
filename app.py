@@ -318,7 +318,7 @@ class YoutubeDownloader(QMainWindow):
         layout.addWidget(label)
 
         # URL Label and QTextEdit for URLs
-        self.url_label = QLabel("YouTube URLs (one per line):", self)
+        self.url_label = QLabel("YouTube or Twitter URLs (one per line):", self)
         self.url_input = QTextEdit(self)
         layout.addWidget(self.url_label)
         layout.addWidget(self.url_input)
