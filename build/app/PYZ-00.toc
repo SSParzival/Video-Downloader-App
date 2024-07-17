@@ -1,3 +1,0 @@
-('C:\\Users\\mativ\\Documents\\Jupyter '
- 'Notebooks\\Video-Downloader-App\\build\\app\\PYZ-00.pyz',
- [])
