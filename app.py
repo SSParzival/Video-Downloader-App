@@ -26,6 +26,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QThread, pyqtSignal
 import logging
+from playsound import playsound
 
 logging.basicConfig(
     filename="debug.log",
@@ -88,6 +89,12 @@ class VideoDownloader(QThread):
             self.log_message.emit("\n" + "=" * 40)
             self.log_message.emit("       🎉 All downloads completed! 🎉")
             self.log_message.emit("=" * 40 + "\n")
+
+        try:
+            playsound("erika.mp3", block=False)
+            self.log_message.emit("Sound played")
+        except Exception as e:
+            self.log_message.emit(f"Error playing sound: {str(e)}")
 
         self.finished.emit()
 
@@ -454,6 +461,17 @@ class YoutubeDownloader(QMainWindow):
             self.thread.deleteLater
         )  # Ensure thread object gets deleted
         self.thread.start()  # Start the thread
+
+    def closeEvent(self, event):
+        if self.thread and self.thread.isRunning():
+            # Disconnect signals to avoid accessing deleted objects
+            self.worker.progress.disconnect()
+            self.worker.log_message.disconnect()
+            self.worker.finished.disconnect()
+            self.thread.quit()
+            self.thread.wait()  # Wait for the thread to finish properly
+
+        event.accept()  # Close the application
 
 
 if __name__ == "__main__":
