@@ -25,10 +25,13 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QThread, pyqtSignal
+import logging
 
-
-OUTPUT_DIR = r"C:\Users\mativ\Documents"
-FILE_TYPE = "mp4"  # Default file type
+logging.basicConfig(
+    filename="debug.log",
+    level=logging.DEBUG,
+    format="%(asctime)s %(levelname)s:%(message)s",
+)
 
 
 class VideoDownloader(QThread):
@@ -243,66 +246,66 @@ class VideoDownloader(QThread):
 
     def download_twitter_video(self, url):
         try:
-            # Fetch video info from twitsave
             api_url = f"https://twitsave.com/info?url={url}"
+            logging.debug(f"Fetching video info from: {api_url}")
+
             response = requests.get(api_url)
+            logging.debug(f"Response status code: {response.status_code}")
             response.raise_for_status()  # Ensure we got a valid response
+
             data = bs4.BeautifulSoup(response.text, "html.parser")
+            logging.debug("Fetched and parsed video info.")
 
-            # Find the download button and available quality options
-            download_button = data.find_all("div", class_="origin-top-right")[0]
-            quality_buttons = download_button.find_all("a")
-
-            if not quality_buttons:
-                print(f"No download links found for {url}.")
+            download_button = data.find_all("div", class_="origin-top-right")
+            if not download_button:
+                logging.error(f"No download button found for {url}.")
                 return
 
-            # Get the highest quality video URL
-            highest_quality_url = quality_buttons[0].get("href")
+            quality_buttons = download_button[0].find_all("a")
+            if not quality_buttons:
+                logging.error(f"No download links found for {url}.")
+                return
 
-            # Determine the video file name
+            highest_quality_url = quality_buttons[0].get("href")
+            logging.debug(f"Highest quality video URL: {highest_quality_url}")
+
             file_name_element = data.find_all("div", class_="leading-tight")[
                 0
             ].find_all("p", class_="m-2")
-
             if not file_name_element:
-                print(f"Could not determine video file name for {url}.")
+                logging.error(f"Could not determine video file name for {url}.")
                 return
 
             file_name = file_name_element[0].text.strip()
             file_name = re.sub(r"[^\w\s\-]", "", file_name) + ".mp4"
+            logging.debug(f"File name determined: {file_name}")
 
             download_path = os.path.join(self.output_dir, file_name)
+            logging.debug(f"Download path: {download_path}")
 
-            # Download the video
-            with open(download_path, "wb") as file:
-                response = requests.get(highest_quality_url, stream=True)
-                response.raise_for_status()  # Ensure we got a valid response
+            with requests.get(highest_quality_url, stream=True) as response:
+                response.raise_for_status()
                 total_size = int(response.headers.get("content-length", 0))
                 block_size = 1024
-                progress_bar = tqdm(
-                    total=total_size, unit="B", unit_scale=True, desc=file_name
-                )
+                progress_bar = tqdm(total=total_size, unit="B", unit_scale=True)
 
-                for data in response.iter_content(block_size):
-                    progress_bar.update(len(data))
-                    file.write(data)
+                with open(download_path, "wb") as file:
+                    for chunk in response.iter_content(chunk_size=block_size):
+                        if chunk:  # Filter out keep-alive new chunks
+                            progress_bar.update(len(chunk))
+                            file.write(chunk)
 
                 progress_bar.close()
+                logging.debug(f"Video downloaded successfully: {file_name}")
                 print(f"Video downloaded successfully: {file_name}")
 
-                # Increment downloaded videos and update progress
-                self.downloaded_videos += 1
-                progress_percentage = int(
-                    self.downloaded_videos / self.total_videos * 100
-                )
-                self.progress.emit(progress_percentage)
+            self.downloaded_videos += 1  # Increment downloaded videos
+            self.progress.emit(
+                int(self.downloaded_videos / self.total_videos * 100)
+            )  # Update progress
 
-        except requests.RequestException as e:
-            print(f"Failed to fetch video info from {url}: {e}")
         except Exception as e:
-            print(f"An error occurred while downloading video from {url}: {e}")
-
+            logging.error(f"Error downloading video from {url}: {e}")
 
     def get_playlist_video_count(self, playlist_url):
         try:
@@ -323,6 +326,19 @@ class YoutubeDownloader(QMainWindow):
     def initUI(self):
         self.setWindowTitle("Video Downloader")
         self.setGeometry(100, 100, 600, 400)
+
+        # Calculate the center point of the screen
+        screen = QApplication.primaryScreen()
+        center_point = screen.availableGeometry().center()
+
+        # Calculate the top-left point for the window to be centered
+        window_rect = self.frameGeometry()
+        window_rect.moveCenter(center_point)
+
+        # Move the window to the centered position
+        self.move(window_rect.topLeft())
+
+        self.show()
 
         icon_path = "images.ico"  # Replace with your icon file path
         self.setWindowIcon(QIcon(icon_path))

@@ -1,0 +1,11 @@
+2024-07-17 01:03:41,077 DEBUG:Fetching video info from: https://twitsave.com/info?url=https://x.com/DAMIADENUGA/status/1813005957145780734
+2024-07-17 01:03:41,077 DEBUG:Starting new HTTPS connection (1): twitsave.com:443
+2024-07-17 01:03:41,909 DEBUG:https://twitsave.com:443 "GET /info?url=https://x.com/DAMIADENUGA/status/1813005957145780734 HTTP/11" 200 None
+2024-07-17 01:03:41,909 DEBUG:Response status code: 200
+2024-07-17 01:03:41,925 DEBUG:Fetched and parsed video info.
+2024-07-17 01:03:41,925 DEBUG:Highest quality video URL: https://twitsave.com/download?file=aHR0cHM6Ly92aWRlby50d2ltZy5jb20vYW1wbGlmeV92aWRlby8xODEzMDA1ODk0NTQ1NzA3MDA4L3ZpZC9hdmMxLzcyMHgxMjgwLzJtdjZuZHJES1hyTjlnRU0ubXA0P3RhZz0xNg%3D%3D
+2024-07-17 01:03:41,925 DEBUG:File name determined: God is the greatest can someone please give us more details on this particular specie of monkey .mp4
+2024-07-17 01:03:41,925 DEBUG:Download path: C:/Users/mativ/Documents\God is the greatest can someone please give us more details on this particular specie of monkey .mp4
+2024-07-17 01:03:41,925 DEBUG:Starting new HTTPS connection (1): twitsave.com:443
+2024-07-17 01:03:42,787 DEBUG:https://twitsave.com:443 "GET /download?file=aHR0cHM6Ly92aWRlby50d2ltZy5jb20vYW1wbGlmeV92aWRlby8xODEzMDA1ODk0NTQ1NzA3MDA4L3ZpZC9hdmMxLzcyMHgxMjgwLzJtdjZuZHJES1hyTjlnRU0ubXA0P3RhZz0xNg%3D%3D HTTP/11" 200 None
+2024-07-17 01:03:43,859 DEBUG:Video downloaded successfully: God is the greatest can someone please give us more details on this particular specie of monkey .mp4
