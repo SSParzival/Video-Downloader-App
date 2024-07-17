@@ -67,7 +67,6 @@ missing module named docrepr - imported by IPython.core.interactiveshell (option
 missing module named pexpect - imported by IPython.utils._process_posix (top-level)
 missing module named System - imported by IPython.utils._process_cli (top-level)
 missing module named clr - imported by IPython.utils._process_cli (top-level)
-excluded module named decorator - imported by IPython.core.formatters (top-level), IPython.core.history (top-level)
 excluded module named backcall - imported by IPython.core.events (top-level)
 missing module named 'prompt_toolkit.eventloop' - imported by IPython.terminal.interactiveshell (delayed, conditional)
 excluded module named colorama - imported by tqdm.utils (conditional, optional), IPython.terminal.interactiveshell (delayed)
