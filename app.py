@@ -265,7 +265,7 @@ class VideoDownloader(QThread):
             file_name = file_name_element[0].text.strip()
             file_name = re.sub(r"[^\w\s\-]", "", file_name) + ".mp4"
 
-            download_path = os.path.join(self.outdir, file_name)
+            download_path = os.path.join(self.outputdir, file_name)
 
             with open(download_path, "wb") as file:
                 response = requests.get(highest_quality_url, stream=True)
