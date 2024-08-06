@@ -294,3 +294,18 @@
         close erika.mp3
     El dispositivo especificado no está abierto o MCI no lo reconoce.
 2024-07-17 12:13:25,364 WARNING:Failed to close the file: erika.mp3
+2024-07-28 00:17:47,552 DEBUG:matched regex search: (?:v=|\/)([0-9A-Za-z_-]{11}).*
+2024-07-28 00:17:47,733 DEBUG:applying descrambler
+2024-07-28 00:17:47,741 DEBUG:downloading (5057260 total bytes) file to C:\Users\mativ\Documents\temp_video.mp4
+2024-07-28 00:17:49,778 DEBUG:download remaining: 0
+2024-07-28 00:17:49,778 DEBUG:download finished
+2024-07-28 00:17:49,778 DEBUG:downloading (93924 total bytes) file to C:\Users\mativ\Documents\temp_audio.mp4
+2024-07-28 00:17:50,585 DEBUG:download remaining: 0
+2024-07-28 00:17:50,585 DEBUG:download finished
+2024-07-28 00:17:51,841 DEBUG:Starting
+2024-07-28 00:17:53,348 DEBUG:Returning
+2024-07-28 00:17:53,349 ERROR:
+    Error 263 for command:
+        close erika.mp3
+    El dispositivo especificado no está abierto o MCI no lo reconoce.
+2024-07-28 00:17:53,350 WARNING:Failed to close the file: erika.mp3
